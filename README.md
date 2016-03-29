@@ -25,5 +25,48 @@ For examples of use, you can check the tests.
         [2] => 24
     )
      
-````
+```
+
+
+##Optionals
+
+Behaves like the Option type of Scala... or tries to :)
+
+Some examples:
+
+```php
+
+$a = option(null);
+$b = option(4);
+
+
+$chainedFlatMapOfNone = $a->flatMap(function($e) { return Some($e + 10);}); //none
+$chainedFlatMapOfSome = $b->flatMap(function($e) { return Some($e + 10);}); //Some(14)
+
+$nestedFlatMapsOfNone = $a->flatMap(function($e) { return Some($e + 105454545);})
+                          ->flatMap(function($e) { return Some($e + 10 - 3);}); //none
+
+
+$nestedFlatMapsOfSomeToSomeWithMap = $b->flatMap(function($e) { return Some($e + 105454545);})
+                                       ->flatMap(function($e) { return Some($e + 10 - 3);})
+                                       ->map(function($e) { return $e;}); //Some(105454556)
+
+$nestedFlatMapsOfSomeToNone = $b->flatMap(function($e) { return Some($e + 105454545);})
+                                ->flatMap(function($e) { return Some($e + 10 - 3);})
+                                ->map(function($e) { return option(null);}); //None
+
+```
+
+Outputs
+
+```
+The value of the [Mamoreno\Optionals\None] is [Mamoreno\Optionals\None]
+The value of the [Mamoreno\Optionals\Some] is [4]
+The value of the [Mamoreno\Optionals\None] is [Mamoreno\Optionals\None]
+The value of the [Mamoreno\Optionals\Some] is [14]
+The value of the [Mamoreno\Optionals\None] is [Mamoreno\Optionals\None]
+The value of the [Mamoreno\Optionals\Some] is [105454556]
+The value of the [Mamoreno\Optionals\None] is [Mamoreno\Optionals\None]
+```
+
 

@@ -1,0 +1,16 @@
+{
+    "name": "miguelsaddress/optionals",
+    "description": "PHP Optional types as in Scala",
+    "authors": [
+        {
+            "name": "Miguel Angel Moreno",
+            "email": "miguel.s.address@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mamoreno\\": ["src/", "src/test"]
+        }
+    }
+}

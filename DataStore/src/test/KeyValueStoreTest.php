@@ -54,4 +54,28 @@ class KeyValueStoreTest extends PHPUnit_Framework_TestCase {
         $vs = $vs->set("a",1)->set("b",2)->set("c",3)->reverseKeepKeys();
         $this->assertEquals($vs->values(), ["c" => 3, "b" => 2, "a" => 1]);
     }
+
+    public function testForAll() {
+        $vs = new Mamoreno\DataStore\KeyValueStore();
+        $vs = $vs->set("a", 2)->set("b", 4)->set("c", 36)->forAll(function($e){ return $e % 2 === 0;});
+        $this->assertTrue($vs);
+
+        $vs = new Mamoreno\DataStore\KeyValueStore();
+        $vs = $vs->set("a", 2)->set("b", 4)->set("c", 36)->forAll(function($e){ return $e === 0;});
+        $this->assertFalse($vs);
+    }
+
+    public function testForSome() {
+        $vs = new Mamoreno\DataStore\KeyValueStore();
+        $vs = $vs->set("a", 2)->set("b", 4)->set("c", 36)->forSome(function($e) {return $e % 2 === 0;});
+        $this->assertTrue($vs);
+
+        $vs = new Mamoreno\DataStore\KeyValueStore();
+        $vs = $vs->set("a", 1)->set("b", 2)->set("c", 3)->forSome(function($e){ return $e % 2 === 0;});
+        $this->assertTrue($vs);
+
+        $vs = new Mamoreno\DataStore\KeyValueStore();
+        $vs = $vs->set("a", 1)->set("b", 2)->set("c", 3)->forSome(function($e){ return $e > 99;});
+        $this->assertFalse($vs);
+    }
 }

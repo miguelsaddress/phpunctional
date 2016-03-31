@@ -82,4 +82,28 @@ class ValueStoreTest extends PHPUnit_Framework_TestCase {
 		$vs = $vs->set(1)->set(2)->set(3)->reverse();
 		$this->assertEquals($vs->values(), [3,2,1]);
 	}
+
+	public function testForAll() {
+		$vs = new Mamoreno\DataStore\ValueStore();
+		$vs = $vs->set(2)->set(4)->set(36)->forAll(function($e){ return $e % 2 === 0;});
+		$this->assertTrue($vs);
+
+		$vs = new Mamoreno\DataStore\ValueStore();
+		$vs = $vs->set(2)->set(4)->set(36)->forAll(function($e){ return $e === 0;});
+		$this->assertFalse($vs);
+	}
+
+	public function testForSome() {
+		$vs = new Mamoreno\DataStore\ValueStore();
+		$vs = $vs->set(2)->set(4)->set(36)->forSome(function($e) {return $e % 2 === 0;});
+		$this->assertTrue($vs);
+
+		$vs = new Mamoreno\DataStore\ValueStore();
+		$vs = $vs->set(1)->set(2)->set(3)->forSome(function($e){ return $e % 2 === 0;});
+		$this->assertTrue($vs);
+
+		$vs = new Mamoreno\DataStore\ValueStore();
+		$vs = $vs->set(1)->set(2)->set(3)->forSome(function($e){ return $e > 99;});
+		$this->assertFalse($vs);
+	}
 }

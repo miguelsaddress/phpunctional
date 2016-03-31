@@ -80,6 +80,42 @@ trait Store {
     }
 
     /**
+     * Returns true if all the elements of the collection accomplish the given function
+     *
+     * @param      Function|\Closure  $f    predicate that receives an item of the collection and
+     *                                      returns a boolean. True if the element fits the filter.
+     *                                      false otherwise
+     *
+     * @return     boolean
+     */
+    public function forAll(\Closure $f) {
+        $ret = $this->fold(true, 
+            function($carry, $item) use ($f) {
+                return $carry && $f($item); 
+            }
+        );
+        return $ret;
+    }
+
+    /**
+     * Returns true if some the elements of the collection accomplish the given function
+     *
+     * @param      Function|\Closure  $f    predicate that receives an item of the collection and
+     *                                      returns a boolean. True if the element fits the filter.
+     *                                      false otherwise
+     *
+     * @return     boolean
+     */
+    public function forSome(\Closure $f) {
+        $ret = $this->fold(false, 
+            function($carry, $item) use ($f) {
+                return $carry || $f($item); 
+            }
+        );
+        return $ret;
+    }
+
+    /**
      * Returns a new Store containing the flatten collection
      *
      * @return     self
